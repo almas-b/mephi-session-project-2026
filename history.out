@@ -1,0 +1,88 @@
+    1  ping -c 4 8.8.8.8 > ~/ping.out
+    2  dnf update -y
+    3  dnf install -y nginx libcap-ng-utils git policycoreutils-python-utils acl
+    4  dnf download --destdir=/tmp tcpdump
+    5  rpm -ivh /tmp/tcpdump*.rpm
+    6  rpm -ivh /tmp/tcpdump*x86_64.rpm
+    7  rpm -Uvh --replacepkgs /tmp/tcpdump*x86_64.rpm
+    8  dnf history > ~/dnf.out
+    9  poweroff
+   10  lsblk
+   11  parted -s /dev/sdb mklabel gpt mkpart primary ext4 0% 100%
+   12  lsblk
+   13  mkfs.ext4 -L MEPHI_WEB /dev/sdb1
+   14  mkdir -p /mephi-web
+   15  echo "LABEL=MEPHI_WEB /mephi-web ext4 defaults 0 2" >> etc/fstab
+   16  echo "LABEL=MEPHI_WEB /mephi-web ext4 defaults 0 2" >> /etc/fstab
+   17  mount -a
+   18  systemctl daemon-reload
+   19  mount -a
+   20  df -h
+   21  systemctl enable --now nginx
+   22  systemctl status nginx
+   23  journalctl -u nginx -b > ~/journal.out
+   24  mkdir -p /data/mephi-2026
+   25  groupadd razraby
+   26  useradd -u 5501 -G razraby user1
+   27  useradd -u 5502 -G razraby user2
+   28  useradd -u 5503 -G razraby user3
+   29  groupadd -g 4444 curators
+   30  useradd -G curators curator1
+   31  useradd -G curators curator2
+   32  chown root:razraby /data/mephi-2026
+   33  chmod 2770 /data/mephi-2026
+   34  setfacl -m g:razraby:rwx /data/mephi-2026
+   35  setfacl -m g:curators:rwx / data/mephi-web-2026
+   36  setfacl -m g:curators:rwx /data/mephi-2026
+   37  setfacl -d -m g:razraby:rwx /data/mephi-2026
+   38  setfacl -d -m g:curators:r-x /data/mephi-2026
+   39  setfacl -d -m o::--- /data/mephi-2026
+   40  chmod u-s,o+rx /usr/sbin/tcpdump
+   41  setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+   42  getcap / usr/sbin/tcpdump
+   43  getcap /usr/sbin/tcpdump
+   44  sudo -u user1 /usr/sbin/tcpdump -c 2
+   45  setfacl -m -g:curators:r-x /data/mephi-2026
+   46  setfacl -m g:curators:r-x /data/mephi-2026
+   47  journalctl -u nginx -b > ~/journalctl.out
+   48  getenforce
+   49  nano /etc/nginx/nginx.conf
+   50  systemctl restart nginx
+   51  semanage fcontext -a -t httpd_sys_content_t "/mephi-web(/.*)?"
+   52  restorecon -Rv /mephi-web
+   53  usermod -s /sbin/nologin curator1
+   54  usermod -s /sbin/nologin curator2
+   55  passwd user1
+   56  passwd user2
+   57  passwd user3
+   58  sed -i 's/^PASS_MAX_DAYS.*/PASS_MAX_DAYS\t90/' /etc/login.defs
+   59  for u in user1 user2 user3 curator1 curator2; do chage -M 90 $u; done
+   60  sed -i 's/^# *minlen.*/minlen = 12/' /etc/security/pwquality.conf
+   61  grep "^minlen" /etc/security/pwquality.conf || echo "minlen = 12" >> /etc/security/pwquality.conf
+   62  sed -i 's/^PASS_MIN_LEN.*/PASS_MIN_LEN\t12/' /etc/login.defs
+   63  echo "Hello from Student: 374447" > /mephi-web/index.html
+   64  chmod 644 /mephi-web/index.html
+   65  restorecon -v /mephi-web/index.html
+   66  curl http://localhost/
+   67  cp /home/almas_b/mephi-screenshot.png ~/mephi-session-project-2026/
+   68  mkdir -p ~/mephi-session-project-2026
+   69  cd ~/mephi-session-project-2026
+   70  cp /home/almas_b/mephi-screenshot.png
+   71  cd /home/almas_b/mephi-screenshot.png .
+   72  cp /home/almas_b/mephi-screenshot.png
+   73  cp /home/almas_b/mephi-screenshot.png .
+   74  ping -c 4 8.8.8.8 > ping.out
+   75  stat /data/mephi-2026 > stat.out
+   76  stat /mephi-web >> stat.out
+   77  getcap /usr/sbin/tcpdump > getcap.out
+   78  dnf history > dnf.out
+   79  journalctl -u nginx -b > journalctl.out
+   80  getenforce > getenforce.out
+   81  curl http://localhost/ > curl.out
+   82  cp /etc/fstab ./fstab
+   83  cp /etc/passwd ./passwd
+   84  cp /etc/shadow ./shadow
+   85  cp /etc/group ./group
+   86  cp /etc/security/pwquality.conf ./pwquality.conf
+   87  chmod 644 fstab passwd shadow group pwquality.conf
+   88  history > history.out

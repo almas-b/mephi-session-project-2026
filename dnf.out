@@ -1,0 +1,7 @@
+Иденти | Командная строка                                                        | Дата и время     | Действия       | Изменен
+------------------------------------------------------------------------------------------------------------------------------
+     5 | install -y nginx libcap-ng-utils git policycoreutils-python-utils acl   | 2026-10-16 13:35 | Install        |    5   
+     4 | update -y                                                               | 2026-10-16 13:31 | I, O, U        |  292 EE
+     3 | autoremove -y --setopt=metadata_expire=-1                               | 2026-10-16 13:13 | Removed        |    1  <
+     2 | remove -y --setopt=metadata_expire=-1 open-vm-tools spice-vdagent       | 2026-10-16 13:12 | Removed        |    2 >E
+     1 |                                                                         | 2026-10-16 13:02 | Install        | 1851 EE
